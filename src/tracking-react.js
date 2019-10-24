@@ -1,14 +1,18 @@
 import React, { useContext, createContext, useEffect, useMemo } from "react";
 import { trackingManager } from "./tracking";
 
-import { onTrackingEvent } from "./external-tracking";
-
 export const TrackingContext = createContext({
   ready: () => {},
   track: () => {}
 });
 
-export const TrackingProvider = ({ id, children, params, isReady = false }) => {
+export const TrackingProvider = ({
+  id,
+  children,
+  params,
+  onTrackingEvent,
+  isReady = false
+}) => {
   const tracking = useMemo(
     () => trackingManager({ id, onTrackingEvent, initialParams: params }),
     []
@@ -18,7 +22,7 @@ export const TrackingProvider = ({ id, children, params, isReady = false }) => {
     if (!isReady) return;
 
     tracking.ready(params);
-  }, [tracking, params, isReady]);
+  }, [params, isReady]);
 
   return (
     <TrackingContext.Provider value={tracking}>
