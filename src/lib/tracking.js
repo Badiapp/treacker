@@ -1,15 +1,21 @@
+const DEFAULT_PROVIDER_NAME = "__default";
 const TRACKING_BASE_NAME = "tracking";
 const registeredTrackingProviders = new Set();
 
-const trackWithEvent = (eventName, params) => {
-  const trackingEvent = new CustomEvent(TRACKING_BASE_NAME, {
+const createEventName = (name = DEFAULT_PROVIDER_NAME) => {
+  return `${TRACKING_BASE_NAME}:${name}`;
+};
+
+const trackWithEvent = ({ eventName, params, id }) => {
+  const eventSpaceName = createEventName(id);
+  const trackingEvent = new CustomEvent(eventSpaceName, {
     detail: {
       eventName,
       params
     }
   });
 
-  document.dispatchEvent(trackingEvent);
+  window.dispatchEvent(trackingEvent);
 };
 
 const handleTrackEvent = onTrackingEvent => event => {
@@ -18,11 +24,12 @@ const handleTrackEvent = onTrackingEvent => event => {
   onTrackingEvent({ eventName, params });
 };
 
-const initializeTracking = (onTrackingEvent = () => {}) => {
-  document.addEventListener(
-    TRACKING_BASE_NAME,
-    handleTrackEvent(onTrackingEvent)
-  );
+export const registerTrackingListener = ({
+  eventListener,
+  id = DEFAULT_PROVIDER_NAME
+}) => {
+  const eventName = createEventName(id);
+  window.addEventListener(eventName, handleTrackEvent(eventListener));
 };
 
 const STATUS = {
@@ -36,7 +43,7 @@ const EVENT_TYPES = {
 };
 
 export const trackingManager = ({
-  id: instanceId,
+  id: instanceId = DEFAULT_PROVIDER_NAME,
   onTrackingEvent = () => {},
   initialParams = {}
 }) => {
@@ -53,14 +60,19 @@ export const trackingManager = ({
   }
 
   function init() {
-    if (!instanceExists(instanceId)) registerInstance(instanceId);
+    if (instanceExists(instanceId)) return;
+
+    registerInstance(instanceId);
 
     if (typeof window === "undefined") _queueEvent({ type: EVENT_TYPES.INIT });
     _init();
   }
 
   function _init() {
-    initializeTracking(onTrackingEvent);
+    registerTrackingListener({
+      eventListener: onTrackingEvent,
+      id: instanceId
+    });
     status = STATUS.INITIALIZED;
   }
 
@@ -76,8 +88,10 @@ export const trackingManager = ({
           _track(eventName, params);
           break;
       }
-      queue.shift();
     });
+
+    // clears the queue
+    queue = [];
   }
 
   function _track(eventName, eventParams) {
@@ -86,11 +100,11 @@ export const trackingManager = ({
       ...eventParams
     };
 
-    trackWithEvent(eventName, params);
+    trackWithEvent({ eventName, params, id: instanceId });
   }
 
   function _queueEvent({ payload = {}, type = EVENT_TYPES.TRACK }) {
-    if (EVENT_TYPES.INIT) {
+    if (type === EVENT_TYPES.INIT) {
       return queue.unshift({ type, payload });
     }
 
@@ -115,9 +129,12 @@ export const trackingManager = ({
       params
     };
 
-    if (status !== STATUS.READY) _queueEvent({ payload }, EVENT_TYPES.TRACK);
+    if (status === STATUS.READY) {
+      _track(eventName, params);
+      return;
+    }
 
-    _track(eventName, params);
+    _queueEvent({ payload }, EVENT_TYPES.TRACK);
   }
 
   function replaceParams(params) {

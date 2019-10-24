@@ -1,21 +1,20 @@
 import React, { useEffect } from "react";
 
-import { useTracking } from "./tracking-react";
+import { useTracking } from "./lib/tracking-react";
 
-const ChildComponent = props => {
-  const { tracking } = useTracking();
+const ChildComponent = () => {
+  const tracking = useTracking();
 
   useEffect(() => {
     tracking.track("welcome", { seeker_id: 123 });
   }, []);
 
   const handleOnClick = () => {
-    tracking.track("hola", { mati: "yeah" });
-    console.log("yeah");
+    tracking.track("hola", { jepsi: "yeah" });
   };
 
   const handleOnClick2 = () => {
-    tracking.track("holis", { gorki: "super yeah" });
+    tracking.track("holis", { jepser: "super yeah" });
   };
   return (
     <div>

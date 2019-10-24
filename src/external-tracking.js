@@ -1,3 +1,3 @@
 export const onTrackingEvent = event => {
-  console.log(event);
+  console.log("external tracking", event);
 };
