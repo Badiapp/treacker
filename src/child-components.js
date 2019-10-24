@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 
-import { useTracking } from "./tracking-react";
+import { useTracking } from "./lib/tracking-react";
 
-const ChildComponent = props => {
+const ChildComponent = () => {
   const tracking = useTracking();
 
   useEffect(() => {

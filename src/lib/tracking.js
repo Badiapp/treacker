@@ -1,5 +1,3 @@
-import "geteventlisteners";
-
 const DEFAULT_PROVIDER_NAME = "__default";
 const TRACKING_BASE_NAME = "tracking";
 const registeredTrackingProviders = new Set();
@@ -90,8 +88,10 @@ export const trackingManager = ({
           _track(eventName, params);
           break;
       }
-      queue.shift();
     });
+
+    // clears the queue
+    queue = [];
   }
 
   function _track(eventName, eventParams) {
@@ -104,7 +104,7 @@ export const trackingManager = ({
   }
 
   function _queueEvent({ payload = {}, type = EVENT_TYPES.TRACK }) {
-    if (EVENT_TYPES.INIT) {
+    if (type === EVENT_TYPES.INIT) {
       return queue.unshift({ type, payload });
     }
 

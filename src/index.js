@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
 
-import { TrackingProvider } from "./tracking-react";
+import { TrackingProvider } from "./lib/tracking-react";
 import ChildComponent from "./child-components";
 
 import { onTrackingEvent } from "./external-tracking";
