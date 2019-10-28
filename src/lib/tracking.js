@@ -69,7 +69,7 @@ export const trackingManager = ({
   }
 
   function _init() {
-    registerTrackingListener({
+    registerListener({
       eventListener: onTrackingEvent,
       id: instanceId
     });
@@ -148,12 +148,20 @@ export const trackingManager = ({
     return memoizedParams;
   }
 
+  function registerListener(listener) {
+    return registerTrackingListener({
+      eventListener: listener,
+      id: instanceId
+    });
+  }
+
   init();
 
   return {
     ready,
     track,
     replaceParams,
-    getParams
+    getParams,
+    registerListener,
   };
 };
