@@ -1,8 +1,8 @@
 {
-  "name": "react-tracking",
-  "version": "1.0.0",
-  "description": "",
-  "keywords": [],
+  "name": "treaker",
+  "version": "0.0.0-semantic-released",
+  "description": "The tracking library for React",
+  "keywords": ["react", "tracking"],
   "main": "dist/bundle.js",
   "module": "dist/bundle-esm.js",
   "dependencies": {
