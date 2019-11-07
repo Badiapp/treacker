@@ -3,9 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "keywords": [],
-  "main": "src/index.js",
+  "main": "dist/bundle.js",
+  "module": "dist/bundle-esm.js",
   "dependencies": {},
   "devDependencies": {
+    "@babel/core": "^7.7.2",
+    "@babel/preset-env": "^7.7.1",
+    "@babel/preset-react": "^7.7.0",
     "eslint": "^6.6.0",
     "eslint-config-standard": "^14.1.0",
     "eslint-plugin-import": "^2.18.2",
@@ -18,14 +22,15 @@
     "react-dom": "^16.11.0",
     "rollup": "^1.26.3",
     "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-peer-deps-external": "^2.2.0",
     "typescript": "3.3.3"
   },
   "scripts": {
-    "dev": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "dev": "rollup -c -w",
+    "build": "rollup -c --environment INCLUDE_DEPS,BUILD:production",
+    "test": "jest --env=jsdom"
   },
   "browserslist": [
     ">0.2%",
