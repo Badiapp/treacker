@@ -1,8 +1,11 @@
 {
   "name": "treacker",
-  "version": "0.0.0-semantic-released",
+  "version": "0.0.0-development",
   "description": "The tracking library for React",
-  "keywords": ["react", "tracking"],
+  "keywords": [
+    "react",
+    "tracking"
+  ],
   "main": "dist/bundle.js",
   "module": "dist/bundle-esm.js",
   "dependencies": {
@@ -32,12 +35,14 @@
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-peer-deps-external": "^2.2.0",
     "semantic-release-cli": "^5.2.3",
-    "typescript": "3.3.3"
+    "typescript": "3.3.3",
+    "semantic-release": "^15.13.30"
   },
   "scripts": {
     "dev": "rollup -c -w",
     "build": "rollup -c --environment INCLUDE_DEPS,BUILD:production",
-    "test": "jest --env=jsdom"
+    "test": "jest --env=jsdom",
+    "semantic-release": "semantic-release"
   },
   "browserslist": [
     ">0.2%",
@@ -60,5 +65,9 @@
       "pre-commit": "lint-staged",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jepser/treacker.git"
   }
 }
