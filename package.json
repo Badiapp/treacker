@@ -18,6 +18,8 @@
     "@babel/preset-react": "^7.7.0",
     "@commitlint/cli": "^8.2.0",
     "@commitlint/config-conventional": "^8.2.0",
+    "@types/jest": "^24.0.22",
+    "babel-jest": "^24.9.0",
     "eslint": "^6.6.0",
     "eslint-config-standard": "^14.1.0",
     "eslint-plugin-import": "^2.18.2",
@@ -29,14 +31,15 @@
     "prop-types": "^15.7.2",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
+    "react-test-renderer": "^16.11.0",
     "rollup": "^1.26.3",
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-peer-deps-external": "^2.2.0",
+    "semantic-release": "^15.13.30",
     "semantic-release-cli": "^5.2.3",
-    "typescript": "3.3.3",
-    "semantic-release": "^15.13.30"
+    "typescript": "3.3.3"
   },
   "scripts": {
     "dev": "rollup -c -w",
@@ -56,7 +59,7 @@
   },
   "lint-staged": {
     "src/**/*.{js,jsx}": [
-      "eslint . --fix",
+      "eslint ./src --fix",
       "git add"
     ]
   },

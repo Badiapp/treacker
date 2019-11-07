@@ -3,5 +3,8 @@
     "standard",
     "plugin:react/recommended"
   ],
-  "env": { "browser": true }
+  "env": {
+    "browser": true,
+    "jest": true
+  }
 }

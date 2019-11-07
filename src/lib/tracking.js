@@ -1,15 +1,7 @@
 import { DEFAULT_PROVIDER_NAME, STATUS, EVENT_TYPES } from './constants'
-import { createEventName, trackWithEvent, registerEventListener } from './browser-helpers'
+import { trackWithEvent, registerTrackingListener } from './helpers'
 
 const registeredTrackingProviders = new Set()
-
-export const registerTrackingListener = ({
-  eventListener,
-  id = DEFAULT_PROVIDER_NAME
-}) => {
-  const eventName = createEventName(id)
-  registerEventListener({ eventName, eventListener })
-}
 
 export const trackingManager = ({
   id: instanceId = DEFAULT_PROVIDER_NAME,
