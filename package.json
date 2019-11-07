@@ -5,11 +5,16 @@
   "keywords": [],
   "main": "dist/bundle.js",
   "module": "dist/bundle-esm.js",
-  "dependencies": {},
+  "dependencies": {
+    "husky": "^3.0.9",
+    "lint-staged": "^9.4.2"
+  },
   "devDependencies": {
     "@babel/core": "^7.7.2",
     "@babel/preset-env": "^7.7.1",
     "@babel/preset-react": "^7.7.0",
+    "@commitlint/cli": "^8.2.0",
+    "@commitlint/config-conventional": "^8.2.0",
     "eslint": "^6.6.0",
     "eslint-config-standard": "^14.1.0",
     "eslint-plugin-import": "^2.18.2",
@@ -17,6 +22,7 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-react": "^7.16.0",
     "eslint-plugin-standard": "^4.0.1",
+    "jest": "^24.9.0",
     "prop-types": "^15.7.2",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
@@ -25,6 +31,7 @@
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-peer-deps-external": "^2.2.0",
+    "semantic-release-cli": "^5.2.3",
     "typescript": "3.3.3"
   },
   "scripts": {
@@ -41,5 +48,17 @@
   "peerDependencies": {
     "react": "^16.11.0",
     "react-dom": "^16.11.0"
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx}": [
+      "eslint . --fix",
+      "git add"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
   }
 }
