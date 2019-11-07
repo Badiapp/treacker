@@ -1,167 +1,136 @@
-import { DEFAULT_PROVIDER_NAME, TRACKING_BASE_NAME } from './constants'
+import { DEFAULT_PROVIDER_NAME, STATUS, EVENT_TYPES } from './constants'
+import { createEventName, trackWithEvent, registerEventListener } from './browser-helpers'
 
-const registeredTrackingProviders = new Set();
-
-const createEventName = (name = DEFAULT_PROVIDER_NAME) => {
-  return `${TRACKING_BASE_NAME}:${name}`;
-};
-
-const trackWithEvent = ({ eventName, params, id }) => {
-  const eventSpaceName = createEventName(id);
-  const trackingEvent = new CustomEvent(eventSpaceName, {
-    detail: {
-      eventName,
-      params
-    }
-  });
-
-  window.dispatchEvent(trackingEvent);
-};
-
-const handleTrackEvent = onTrackingEvent => event => {
-  const { eventName, params } = event.detail;
-
-  onTrackingEvent({ eventName, params });
-};
+const registeredTrackingProviders = new Set()
 
 export const registerTrackingListener = ({
   eventListener,
   id = DEFAULT_PROVIDER_NAME
 }) => {
-  const eventName = createEventName(id);
-  window.addEventListener(eventName, handleTrackEvent(eventListener));
-};
-
-const STATUS = {
-  INITIAL: 0,
-  INITIALIZED: 1,
-  READY: 2
-};
-const EVENT_TYPES = {
-  INIT: "init",
-  TRACK: "track"
-};
+  const eventName = createEventName(id)
+  registerEventListener({ eventName, eventListener })
+}
 
 export const trackingManager = ({
   id: instanceId = DEFAULT_PROVIDER_NAME,
   onTrackingEvent = () => {},
   initialParams = {}
 }) => {
-  let queue = [];
-  let memoizedParams = initialParams;
-  let status = STATUS.INITIAL;
+  let queue = []
+  let memoizedParams = initialParams
+  let status = STATUS.INITIAL
 
-  function registerInstance(id) {
-    registeredTrackingProviders.add(id, this);
+  function registerInstance (id) {
+    registeredTrackingProviders.add(id, this)
   }
 
-  function instanceExists(id) {
-    return registeredTrackingProviders.has(id);
+  function instanceExists (id) {
+    return registeredTrackingProviders.has(id)
   }
 
-  function init() {
-    if (instanceExists(instanceId)) return;
+  function init () {
+    if (instanceExists(instanceId)) return
 
-    registerInstance(instanceId);
+    registerInstance(instanceId)
 
-    if (typeof window === "undefined") _queueEvent({ type: EVENT_TYPES.INIT });
-    _init();
+    if (typeof window === 'undefined') _queueEvent({ type: EVENT_TYPES.INIT })
+    _init()
   }
 
-  function _init() {
+  function _init () {
     registerListener({
       eventListener: onTrackingEvent,
       id: instanceId
-    });
-    status = STATUS.INITIALIZED;
+    })
+    status = STATUS.INITIALIZED
   }
 
-  function _flushQueue() {
+  function _flushQueue () {
     queue.forEach(event => {
+      const { eventName, params } = event.payload
       switch (event.type) {
         case EVENT_TYPES.INIT:
-          _init();
-          break;
+          _init()
+          break
         case EVENT_TYPES.TRACK:
         default:
-          const { eventName, params } = event.payload;
-          _track(eventName, params);
-          break;
+          _track(eventName, params)
+          break
       }
-    });
+    })
 
     // clears the queue
-    queue = [];
+    queue = []
   }
 
-  function _track(eventName, eventParams) {
+  function _track (eventName, eventParams) {
     const params = {
       ...memoizedParams,
       ...eventParams
-    };
+    }
 
-    trackWithEvent({ eventName, params, id: instanceId });
+    trackWithEvent({ eventName, params, id: instanceId })
   }
 
-  function _queueEvent({ payload = {}, type = EVENT_TYPES.TRACK }) {
+  function _queueEvent ({ payload = {}, type = EVENT_TYPES.TRACK }) {
     if (type === EVENT_TYPES.INIT) {
-      return queue.unshift({ type, payload });
+      return queue.unshift({ type, payload })
     }
 
     queue.push({
       type,
       payload
-    });
+    })
   }
 
-  function ready(extraParams) {
-    if (status === STATUS.READY) return;
+  function ready (extraParams) {
+    if (status === STATUS.READY) return
 
-    memoizedParams = extraParams;
-    _flushQueue();
+    memoizedParams = extraParams
+    _flushQueue()
 
-    status = STATUS.READY;
+    status = STATUS.READY
   }
 
-  function track(eventName, params) {
+  function track (eventName, params) {
     const payload = {
       eventName,
       params
-    };
-
-    if (status === STATUS.READY) {
-      _track(eventName, params);
-      return;
     }
 
-    _queueEvent({ payload }, EVENT_TYPES.TRACK);
+    if (status === STATUS.READY) {
+      _track(eventName, params)
+      return
+    }
+
+    _queueEvent({ payload }, EVENT_TYPES.TRACK)
   }
 
-  function replaceParams(params) {
+  function replaceParams (params) {
     memoizedParams = {
       ...memoizedParams,
       ...params
-    };
+    }
   }
 
-  function getParams() {
-    return memoizedParams;
+  function getParams () {
+    return memoizedParams
   }
 
-  function registerListener(listener) {
+  function registerListener (listener) {
     return registerTrackingListener({
       eventListener: listener,
       id: instanceId
-    });
+    })
   }
 
-  init();
+  init()
 
   return {
     ready,
     track,
     replaceParams,
     getParams,
-    registerListener,
-  };
-};
+    registerListener
+  }
+}
