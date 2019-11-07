@@ -1,5 +1,5 @@
-const DEFAULT_PROVIDER_NAME = "__default";
-const TRACKING_BASE_NAME = "tracking";
+import { DEFAULT_PROVIDER_NAME, TRACKING_BASE_NAME } from './constants'
+
 const registeredTrackingProviders = new Set();
 
 const createEventName = (name = DEFAULT_PROVIDER_NAME) => {
