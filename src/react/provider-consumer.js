@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from 'react'
 import PropTypes from 'prop-types'
 
-import { trackingManager } from './tracking'
+import { trackingManager } from '../lib/tracking'
 import { TrackingContext } from './context'
 
 export const TrackingProvider = ({
