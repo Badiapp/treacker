@@ -67,6 +67,7 @@ Parameters:
 - id `integer|string`: Identifies the instance if you have several, if there not, it fallbacks to the default one.
 - onTrackingEvent `function`: This will be the function invoke with the payload [described in this section](#registering-event-callbacks).
 - initialParams `object`: Add the initial params to the instance
+- ready `bool`: (defaults to `false`), if set to true it will start dispatching tracking events instantly
 
 ## Interface
 
@@ -312,7 +313,6 @@ tracking.registerListener(newCallbackFunction)
 ```
 
 2. Globally
-1. From an instance:
 Another option is, in case you don't have access to the instance to registering using the global function exposed: `registerTrackingListener`. The signature is the following:
 - eventListener `function` (required): callback function reference.
 - id: is is the id of the already created instance, in case you don't provide one it will fallback to the global one.
