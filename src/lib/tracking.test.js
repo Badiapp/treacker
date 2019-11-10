@@ -6,7 +6,7 @@ const INITIAL_PARAMS = {
   version: 1
 }
 
-advanceTo(new Date(2020, 7, 28, 0, 0, 0))
+advanceTo(1598565600000)
 
 describe('trackingManager', () => {
   const onTrack = jest.fn()
