@@ -36,7 +36,6 @@ export const trackingManager = ({
 
   function _init () {
     registerListener(onTrackingEvent)
-    // status = STATUS.INITIALIZED
     status = isReady ? STATUS.READY : STATUS.INITIALIZED
   }
 
@@ -49,7 +48,7 @@ export const trackingManager = ({
           break
         case EVENT_TYPES.TRACK:
         default:
-          _track(eventName, params)
+          _track(eventName, params, event.timestamp)
           break
       }
     })
@@ -58,24 +57,29 @@ export const trackingManager = ({
     queue = []
   }
 
-  function _track (eventName, eventParams) {
+  function _track (eventName, eventParams, timestamp = Date.now()) {
     const params = {
       ...memoizedParams,
       ...eventParams
     }
 
-    trackWithEvent({ eventName, params, id: instanceId })
+    trackWithEvent({ eventName, params, id: instanceId, timestamp })
   }
 
   function _queueEvent ({ payload = {}, type = EVENT_TYPES.TRACK }) {
-    if (type === EVENT_TYPES.INIT) {
-      return queue.unshift({ type, payload })
+    const timestamp = Date.now()
+
+    const eventPayload = {
+      type,
+      payload,
+      timestamp
     }
 
-    queue.push({
-      type,
-      payload
-    })
+    if (type === EVENT_TYPES.INIT) {
+      return queue.unshift(eventPayload)
+    }
+
+    queue.push(eventPayload)
   }
 
   function ready (extraParams) {

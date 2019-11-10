@@ -18,7 +18,6 @@ export const TrackingProvider = ({
 
   useEffect(() => {
     if (!isReady) return
-
     tracking.ready(params)
   }, [params, isReady])
 
