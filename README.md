@@ -313,7 +313,6 @@ tracking.registerListener(newCallbackFunction)
 ```
 
 2. Globally
-1. From an instance:
 Another option is, in case you don't have access to the instance to registering using the global function exposed: `registerTrackingListener`. The signature is the following:
 - eventListener `function` (required): callback function reference.
 - id: is is the id of the already created instance, in case you don't provide one it will fallback to the global one.
