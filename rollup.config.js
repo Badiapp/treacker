@@ -7,6 +7,8 @@ import replace from '@rollup/plugin-replace'
 
 import pkg from './package.json'
 
+const isDev = !!process.env.ROLLUP_WATCH
+
 const commonJsConfig = {
   include: 'node_modules/**',
   namedExports: {
@@ -20,30 +22,33 @@ const commonJsConfig = {
   }
 }
 
-export default [
-  {
-    input: 'src/index.js',
-    external: ['react', 'prop-types'],
-    output: [
-      {
-        file: pkg.main,
-        format: 'cjs'
-      },
-      {
-        file: pkg.module,
-        format: 'esm'
-      }
-    ],
-    plugins: [
-      commonjs(commonJsConfig),
-      peerDepsExternal(),
-      resolve(),
-      babel({
-        exclude: 'node_modules/**'
-      })
-    ]
-  },
-  {
+const libConfig = {
+  input: 'src/index.js',
+  external: ['react', 'prop-types'],
+  output: [
+    {
+      file: pkg.main,
+      format: 'cjs'
+    },
+    {
+      file: pkg.module,
+      format: 'esm'
+    }
+  ],
+  plugins: [
+    commonjs(commonJsConfig),
+    peerDepsExternal(),
+    resolve(),
+    babel({
+      exclude: 'node_modules/**'
+    })
+  ]
+}
+
+const buildConfig = [libConfig]
+
+if (isDev) {
+  buildConfig.push({
     input: 'example/index.js',
     output: {
       file: 'dist/demo.js',
@@ -62,5 +67,7 @@ export default [
         contentBase: ['dist', 'example']
       })
     ]
-  }
-]
+  })
+}
+
+export default buildConfig
