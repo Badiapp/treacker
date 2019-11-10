@@ -67,6 +67,7 @@ Parameters:
 - id `integer|string`: Identifies the instance if you have several, if there not, it fallbacks to the default one.
 - onTrackingEvent `function`: This will be the function invoke with the payload [described in this section](#registering-event-callbacks).
 - initialParams `object`: Add the initial params to the instance
+- ready `bool`: (defaults to `false`), if set to true it will start dispatching tracking events instantly
 
 ## Interface
 
