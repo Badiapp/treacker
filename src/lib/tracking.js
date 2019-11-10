@@ -6,7 +6,8 @@ const registeredTrackingProviders = new Set()
 export const trackingManager = ({
   id: instanceId = DEFAULT_PROVIDER_NAME,
   onTrackingEvent = () => {},
-  initialParams = {}
+  initialParams = {},
+  ready: isReady = false
 }) => {
   let queue = []
   let memoizedParams = initialParams
@@ -25,16 +26,18 @@ export const trackingManager = ({
 
     registerInstance(instanceId)
 
-    if (typeof window === 'undefined') _queueEvent({ type: EVENT_TYPES.INIT })
+    if (typeof window === 'undefined') {
+      _queueEvent({ type: EVENT_TYPES.INIT })
+      return
+    }
+
     _init()
   }
 
   function _init () {
-    registerListener({
-      eventListener: onTrackingEvent,
-      id: instanceId
-    })
-    status = STATUS.INITIALIZED
+    registerListener(onTrackingEvent)
+    // status = STATUS.INITIALIZED
+    status = isReady ? STATUS.READY : STATUS.INITIALIZED
   }
 
   function _flushQueue () {
@@ -78,7 +81,10 @@ export const trackingManager = ({
   function ready (extraParams) {
     if (status === STATUS.READY) return
 
-    memoizedParams = extraParams
+    memoizedParams = {
+      ...memoizedParams,
+      ...extraParams
+    }
     _flushQueue()
 
     status = STATUS.READY
@@ -99,10 +105,7 @@ export const trackingManager = ({
   }
 
   function replaceParams (params) {
-    memoizedParams = {
-      ...memoizedParams,
-      ...params
-    }
+    memoizedParams = params
   }
 
   function getParams () {

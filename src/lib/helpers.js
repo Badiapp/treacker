@@ -11,11 +11,13 @@ export const createEventName = (name = DEFAULT_PROVIDER_NAME) => {
 }
 
 export const trackWithEvent = ({ eventName, params, id = DEFAULT_PROVIDER_NAME }) => {
+  const timestamp = Date.now()
   const eventSpaceName = createEventName(id)
   const trackingEvent = new CustomEvent(eventSpaceName, {
     detail: {
       eventName,
-      params
+      params,
+      timestamp
     }
   })
 
