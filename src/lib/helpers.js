@@ -1,23 +1,23 @@
 import { DEFAULT_PROVIDER_NAME, TRACKING_BASE_NAME } from './constants'
 
 const handleTrackEvent = onTrackingEvent => event => {
-  const { eventName, params } = event.detail
+  const { eventName, params, timestamp, id } = event.detail
 
-  onTrackingEvent({ eventName, params })
+  onTrackingEvent({ eventName, params, timestamp, id })
 }
 
 export const createEventName = (name = DEFAULT_PROVIDER_NAME) => {
   return `${TRACKING_BASE_NAME}:${name}`
 }
 
-export const trackWithEvent = ({ eventName, params, id = DEFAULT_PROVIDER_NAME }) => {
-  const timestamp = Date.now()
+export const trackWithEvent = ({ eventName, params, timestamp, id = DEFAULT_PROVIDER_NAME }) => {
   const eventSpaceName = createEventName(id)
   const trackingEvent = new CustomEvent(eventSpaceName, {
     detail: {
       eventName,
       params,
-      timestamp
+      timestamp,
+      id
     }
   })
 
