@@ -41,7 +41,7 @@
     "rollup-plugin-serve": "^1.0.1",
     "semantic-release": "^15.13.30",
     "semantic-release-cli": "^5.2.3",
-    "typescript": "3.3.3"
+    "typescript": "^3.7.2"
   },
   "scripts": {
     "dev": "rollup -c -w",

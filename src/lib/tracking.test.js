@@ -1,9 +1,12 @@
+import { advanceTo } from 'jest-date-mock'
 import { trackingManager } from './tracking'
 
 const INITIAL_PARAMS = {
   environment: 'test',
   version: 1
 }
+
+advanceTo(new Date(2020, 7, 28, 0, 0, 0))
 
 describe('trackingManager', () => {
   const onTrack = jest.fn()
@@ -27,10 +30,10 @@ describe('trackingManager', () => {
     expect(onTrack).toHaveBeenNthCalledWith(2, expect.objectContaining({ eventName: 'second', params: { user_id: 5, ...INITIAL_PARAMS } }))
   })
 
-  it('should dispatch the event inmediatly', () => {
+  it('should dispatch the event inmediately', () => {
     tracker.track('third')
 
-    expect(onTrack).toBeCalledWith({ eventName: 'third', params: INITIAL_PARAMS })
+    expect(onTrack).lastCalledWith({ eventName: 'third', params: INITIAL_PARAMS, id: '__default', timestamp: 1598565600000 })
   })
 })
 
