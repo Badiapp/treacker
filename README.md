@@ -3,7 +3,12 @@ The Tracking library for React.
 
 ---
 
-*Work in Progress*
+## Installation
+1. Install it by running `npm i --save treacker` or `yarn add treacker`
+2. Use it with [vanilla JS](#for+vainilla) or [React](#for-react)
+
+## Example
+You can find an example in [this codesandbox](https://codesandbox.io/s/sharp-rain-jr0m6?fontsize=14).
 
 ## What's the challenge to solve?
 
@@ -46,6 +51,8 @@ I want to create a tool that:
 - Provides a declarative interface
 - It is agnostic of the transport service is used on the project to track the events
 - Has an extensive, yet consistant interface
+
+# Docs
 
 ## For Vainilla
 
