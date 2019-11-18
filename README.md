@@ -5,7 +5,7 @@ The Tracking library for React.
 
 ## Installation
 1. Install it by running `npm i --save treacker` or `yarn add treacker`
-2. Use it with [vanilla JS](#for+vainilla) or [React](#for-react)
+2. Use it with [vanilla JS](#for+vanilla) or [React](#for-react)
 
 ## Example
 You can find an example in [this codesandbox](https://codesandbox.io/s/sharp-rain-jr0m6?fontsize=14).
@@ -15,7 +15,7 @@ Check [my post](https://dev.to/jepser/hello-treacker-a-tracking-library-for-reac
 
 # Docs
 
-## For Vainilla
+## 🍦For Vanilla 
 
 ``` js
 import { trackingManager } from 'treacker'
@@ -122,7 +122,7 @@ console.log(tracking.getParams())
 
 ```
 
-## For React
+## ⚛️ For React
 The library uses internally React's Context architecture.
 
 ### 1. Create a provider with `TrackingProvider` 
