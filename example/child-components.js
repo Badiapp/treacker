@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import { useTracking } from '../dist/bundle-esm'
+import { useTracking } from '../dist/bundle.esm'
 
 const ChildComponent = () => {
   const tracking = useTracking()

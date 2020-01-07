@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
-import { TrackingProvider } from '../dist/bundle-esm'
+import { TrackingProvider } from '../dist/bundle.esm'
 import ChildComponent from './child-components'
 
 function App () {
