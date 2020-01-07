@@ -23,7 +23,7 @@ const commonJsConfig = {
 }
 
 const libConfig = {
-  input: 'src/index.js',
+  input: 'src/index.ts',
   external: ['react', 'prop-types'],
   output: [
     {
