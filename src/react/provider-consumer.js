@@ -4,6 +4,8 @@ import PropTypes from 'prop-types'
 import { trackingManager } from '../lib/tracking'
 import { TrackingContext } from './context'
 
+export const TrackingConsumer = TrackingContext.Consumer
+
 export const TrackingProvider = ({
   id,
   children,

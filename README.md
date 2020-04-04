@@ -207,6 +207,21 @@ const Room = ({ roomId }) => {
 }
 ```
 
+### Using the library with class components
+For the cases that you need to use the library with class components, import the context and use it as a common [provider/consumer](https://reactjs.org/docs/context.html#reactcreatecontext) component:
+``` jsx
+import { TrackingContext } from 'treacker'
+
+class MyClass extends React.Component {
+  componentDidMount() {
+    const tracking = this.context;
+    
+    tracking.track('user-component.loaded')
+  }
+}
+MyClass.contextType = TrackingContext;
+```
+
 ### HOC
 WIP: `withTracking()`
 
